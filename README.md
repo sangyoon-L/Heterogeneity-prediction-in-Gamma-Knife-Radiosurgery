@@ -1,1 +1,1 @@
-# Heterogeneity-prediction-in-Gamma-Knife-Radiosurgery
+# Heterogeneity prediction in Gamma Knife Radiosurgery
