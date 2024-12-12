@@ -1,4 +1,4 @@
-# Dose heterogeneity prediction in Gamma Knife Radiosurgery
+# Predicting Dose Heterogeneity in Gamma Knife Radiosurgery
 
 
-Dose heterogeneity prediction in Gamma Knife Radiosurgery using Diffusion Model with 2.5D attention
+Predicting Dose Heterogeneity in Gamma Knife Radiosurgery Using a Diffusion Model With 2.5D Attention
