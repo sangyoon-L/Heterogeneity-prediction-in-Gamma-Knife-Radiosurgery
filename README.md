@@ -13,8 +13,8 @@ This is a repository for the project "Predicting Dose Heterogeneity in Gamma Kni
 * tensorboardX
 * SimpleITK
 
-# Convert 3D into 2D for training
-NPY is required for the dataset. If Nifty, please convert the dataset through the available preprocessing:
+## Convert 3D into 2D for training
+2D NPY format is required for training and evaluation. If Nifty, please convert the dataset through the available preprocessing:
 python NII_to_npy.py
 
 ### Model training
