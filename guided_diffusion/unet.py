@@ -1326,32 +1326,32 @@ class UNetModel_MS_Former(nn.Module):
         h = x.type(self.dtype)
         ct = ct.type(self.dtype)
         
-        prior_dis_6 = dis.type(self.dtype)[:,0,:,:].unsqueeze(1)
-        prior_dis_5 = dis.type(self.dtype)[:,1,:,:].unsqueeze(1)
-        prior_dis_4 = dis.type(self.dtype)[:,2,:,:].unsqueeze(1)
-        prior_dis_3 = dis.type(self.dtype)[:,3,:,:].unsqueeze(1)
-        prior_dis_2 = dis.type(self.dtype)[:,4,:,:].unsqueeze(1)
+        #prior_dis_6 = dis.type(self.dtype)[:,0,:,:].unsqueeze(1)
+        #prior_dis_5 = dis.type(self.dtype)[:,1,:,:].unsqueeze(1)
+        #prior_dis_4 = dis.type(self.dtype)[:,2,:,:].unsqueeze(1)
+        #prior_dis_3 = dis.type(self.dtype)[:,3,:,:].unsqueeze(1)
+        #prior_dis_2 = dis.type(self.dtype)[:,4,:,:].unsqueeze(1)
         prior_dis_1 = dis.type(self.dtype)[:,5,:,:].unsqueeze(1)
         
         next_dis_1 = dis.type(self.dtype)[:,7,:,:].unsqueeze(1)
-        next_dis_2 = dis.type(self.dtype)[:,8,:,:].unsqueeze(1)
-        next_dis_3 = dis.type(self.dtype)[:,9,:,:].unsqueeze(1)
-        next_dis_4 = dis.type(self.dtype)[:,10,:,:].unsqueeze(1)
-        next_dis_5 = dis.type(self.dtype)[:,11,:,:].unsqueeze(1)
-        next_dis_6 = dis.type(self.dtype)[:,12,:,:].unsqueeze(1)
+        #next_dis_2 = dis.type(self.dtype)[:,8,:,:].unsqueeze(1)
+        #next_dis_3 = dis.type(self.dtype)[:,9,:,:].unsqueeze(1)
+        #next_dis_4 = dis.type(self.dtype)[:,10,:,:].unsqueeze(1)
+        #next_dis_5 = dis.type(self.dtype)[:,11,:,:].unsqueeze(1)
+        #next_dis_6 = dis.type(self.dtype)[:,12,:,:].unsqueeze(1)
         
         dis = dis.type(self.dtype)[:,6,:,:].unsqueeze(1)
         
         for i, module in enumerate(self.input_blocks):
             ct = self.input_blocks_CT[i](ct, emb)
             dis = self.input_blocks_DIS[i](dis, emb)
-            prior_dis_6 = self.input_blocks_DIS[i](prior_dis_6, emb)
-            prior_dis_4 = self.input_blocks_DIS[i](prior_dis_4, emb)
-            prior_dis_2 = self.input_blocks_DIS[i](prior_dis_2, emb)
+            #prior_dis_6 = self.input_blocks_DIS[i](prior_dis_6, emb)
+            #prior_dis_4 = self.input_blocks_DIS[i](prior_dis_4, emb)
+            prior_dis_1 = self.input_blocks_DIS[i](prior_dis_1, emb)
 
-            next_dis_2 = self.input_blocks_DIS[i](next_dis_2, emb)
-            next_dis_4 = self.input_blocks_DIS[i](next_dis_4, emb)
-            next_dis_6 = self.input_blocks_DIS[i](next_dis_6, emb)
+            next_dis_1 = self.input_blocks_DIS[i](next_dis_1, emb)
+            #next_dis_4 = self.input_blocks_DIS[i](next_dis_4, emb)
+            #next_dis_6 = self.input_blocks_DIS[i](next_dis_6, emb)
 
             h = module(h, emb) + ct + dis
             hs.append(h)
@@ -1359,16 +1359,17 @@ class UNetModel_MS_Former(nn.Module):
 
         dis_in_slice = self.in_slice_attention(dis)
         
-        dis_cross_prior_6 = self.cross_slice_attention(dis, prior_dis_6)
-        dis_cross_prior_4 = self.cross_slice_attention(dis, prior_dis_4)
-        dis_cross_prior_2 = self.cross_slice_attention(dis, prior_dis_2)
+        #dis_cross_prior_6 = self.cross_slice_attention(dis, prior_dis_6)
+        #dis_cross_prior_4 = self.cross_slice_attention(dis, prior_dis_4)
+        dis_cross_prior_1 = self.cross_slice_attention(dis, prior_dis_1)
         
-        dis_cross_next_2 = self.cross_slice_attention(dis, next_dis_2)
-        dis_cross_next_4 = self.cross_slice_attention(dis, next_dis_4)
-        dis_cross_next_6 = self.cross_slice_attention(dis, next_dis_6)
+        dis_cross_next_1 = self.cross_slice_attention(dis, next_dis_1)
+        #dis_cross_next_4 = self.cross_slice_attention(dis, next_dis_4)
+        #dis_cross_next_6 = self.cross_slice_attention(dis, next_dis_6)
 
         # Concatenate attention outputs and project to align dimensions
-        dis_combined = torch.cat([dis_cross_prior_6,dis_cross_prior_4,dis_cross_prior_2,dis_in_slice, dis_cross_next_2,dis_cross_next_4,dis_cross_next_6], dim=1)
+        #dis_combined = torch.cat([dis_cross_prior_6,dis_cross_prior_4,dis_cross_prior_2,dis_in_slice, dis_cross_next_2,dis_cross_next_4,dis_cross_next_6], dim=1)
+        dis_combined = torch.cat([dis_cross_prior_1,dis_in_slice, dis_cross_next_1], dim=1)
         dis = self.projection(dis_combined)
         
         #print('dis combined', dis.shape)
