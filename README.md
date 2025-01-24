@@ -19,9 +19,9 @@ python NII_to_npy.py
 
 ### Model training
 ```
-CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 --master_port=9999 train.py --gpu 0,1 --bs 16 --T 1000 --epoch 1600
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python -m torch.distributed.run --nproc_per_node=8 --master_port=9999 train.py --gpu 0,1,2,3,4,5,6,7 --bs 16 --T 1000 --epoch 1600 --experiment HeteroDiff --date=20240831
 ```
 ### Model evaluation
 ```
-CUDA_VISIBLE_DEVICES=0 python pred.py --gpu 0 --bs 64 --model_path trained_models/T1000_bs32_epoch1600/model_best_mae.pth --TTA 1 --T 1000 --ddim 8
+CUDA_VISIBLE_DEVICES=0 python -m torch.distributed.run --nproc_per_node=1 --master_port=29500 pred.py --gpu 0 --bs 1 --model_path ./HeteroDiff/trained_models/HeteroDiff_20240831/model_epochXXXX.pth --save_path ./HeteroDiff/result/HeteroDiff_20240831/ --ddim XXX --epoch XXX
 ```
