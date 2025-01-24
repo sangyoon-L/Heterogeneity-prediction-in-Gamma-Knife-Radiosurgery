@@ -9,7 +9,7 @@ os.environ["OMP_NUM_THREADS"] = "4"
 world_size = int(os.environ["WORLD_SIZE"])
 rank = int(os.environ["RANK"])
 
-from dataset_skull_attention import Dataset_PSDM_train, Dataset_PSDM_val
+from dataset import Dataset_PSDM_train, Dataset_PSDM_val
 from torch.utils.data import DataLoader
 import torch.optim as optim
 from tensorboardX import SummaryWriter
